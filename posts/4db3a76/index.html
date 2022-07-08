@@ -1,0 +1,200 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>Minecraft优化指南 | LyinF Blog</title><meta name="keywords" content="MC,优化"><meta name="author" content="Leo Yin"><meta name="copyright" content="Leo Yin"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Minecraft 优化指南Hello 大家好 欢迎收看本期视频 今天教大家如何优化自己的MC 拯救渣机这期主要是教程 不会涉及太多的原理（PS :如果你的电脑太渣连原版都只有5、6帧可能装了优化mod后也没啥用） MC版本Minecraft版本有很多 每个版本的特性和更新都不同 优化也可能有很大差异所以优化的第一步 就是选择一个MC版本了首先 如果你是比较旧的电脑的话 我建议你不要玩最新的版本（">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Minecraft优化指南">
+<meta property="og:url" content="https://leoyin2121.top/posts/4db3a76/index.html">
+<meta property="og:site_name" content="LyinF Blog">
+<meta property="og:description" content="Minecraft 优化指南Hello 大家好 欢迎收看本期视频 今天教大家如何优化自己的MC 拯救渣机这期主要是教程 不会涉及太多的原理（PS :如果你的电脑太渣连原版都只有5、6帧可能装了优化mod后也没啥用） MC版本Minecraft版本有很多 每个版本的特性和更新都不同 优化也可能有很大差异所以优化的第一步 就是选择一个MC版本了首先 如果你是比较旧的电脑的话 我建议你不要玩最新的版本（">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s1.ax1x.com/2022/05/03/OACpd0.png">
+<meta property="article:published_time" content="2022-05-27T09:39:55.000Z">
+<meta property="article:modified_time" content="2022-06-22T04:36:43.526Z">
+<meta property="article:author" content="Leo Yin">
+<meta property="article:tag" content="MC">
+<meta property="article:tag" content="优化">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s1.ax1x.com/2022/05/03/OACpd0.png"><link rel="shortcut icon" href="https://s1.ax1x.com/2022/04/08/Lpxx2R.png"><link rel="canonical" href="https://leoyin2121.top/posts/4db3a76/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/6.1.1/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.staticfile.org/fancyapps-ui/4.0.27/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":false,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.staticfile.org/flickr-justified-gallery/2.1.2/fjGallery.min.js',
+      css: 'https://cdn.staticfile.org/flickr-justified-gallery/2.1.2/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Minecraft优化指南',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-06-22 12:36:43'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.2.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://s1.ax1x.com/2022/04/08/Lpxx2R.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">18</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">9</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://s1.ax1x.com/2022/05/03/OACpd0.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">LyinF Blog</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Minecraft优化指南</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-05-27T09:39:55.000Z" title="发表于 2022-05-27 17:39:55">2022-05-27</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-06-22T04:36:43.526Z" title="更新于 2022-06-22 12:36:43">2022-06-22</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%B8%B8%E6%88%8F/">游戏</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span id="" data-flag-title="Minecraft优化指南"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="twikoo_visitors"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="Minecraft-优化指南"><a href="#Minecraft-优化指南" class="headerlink" title="Minecraft 优化指南"></a>Minecraft 优化指南</h2><p>Hello 大家好 欢迎收看本期视频 今天教大家如何优化自己的MC 拯救渣机<br>这期主要是教程 不会涉及太多的原理<br>（PS :如果你的电脑太渣连原版都只有5、6帧可能装了优化mod后也没啥用）</p>
+<h3 id="MC版本"><a href="#MC版本" class="headerlink" title="MC版本"></a>MC版本</h3><p>Minecraft版本有很多 每个版本的特性和更新都不同 优化也可能有很大差异<br>所以优化的第一步 就是选择一个MC版本了<br>首先 如果你是比较旧的电脑的话 我建议你不要玩最新的版本（8、9年前的那种）<br>如果你在最新版<code>1.18.2</code>的帧数很低的话（10针以下） 那就不建议你玩这个版本了<br>目前来说对于渣机来说比较友好的我个人认为是<code>1.16.5</code>和<code>1.12.2</code><br>这两个版本总体来说比较稳定 比较建议渣机使用<br>如果你是近两年购买的机器 那么还是建议你玩最新版的 因为mc本来就不是很吃配置 近两年来即使是轻薄本应该也是可以保证至少60FPS的运行的<br>好的关于MC版本的选择就到这里 接下来我们讲解Java的版本</p>
+<h3 id="Java版本选择"><a href="#Java版本选择" class="headerlink" title="Java版本选择"></a>Java版本选择</h3><p>众所周知 MC 1.17及以后强制使用了<code>Java17</code> 在此就不多说了<br>我们主要讲讲1.16及以下<br>一般情况下我们玩MC用的都是<code>Java8</code> 而Java8至今也算是比较老了 如果你现在用的是Java8玩MC 同时帧数比较低的话 可以尝试使用<code>Java11</code> 这也是一个LTS(长期支持版) 可能会有更高的帧数<br>（PS: 貌似MC 1.13+版本才能用？ 例如1.16.5 低版本可能会有点bug 1.12没测）<br>Java11 我用的是Zulu的JDK <a target="_blank" rel="noopener" href="https://www.oracle.com/cn/java/technologies/javase/jdk11-archive-downloads.html">Oracle JDK官网</a>需要登录 比较麻烦 所以我用的是<a target="_blank" rel="noopener" href="https://www.azul.com/downloads/?version=java-11-lts&os=windows&architecture=x86-64-bit&package=jdk">Zulu JDK官网</a>一个OpenJDK的发行版<br>下载这个.msi的安装包并安装就好了</p>
+<h3 id="游戏内优化"><a href="#游戏内优化" class="headerlink" title="游戏内优化"></a>游戏内优化</h3><p>这个和后面的Mod优化一起讲</p>
+<h3 id="Mod优化"><a href="#Mod优化" class="headerlink" title="Mod优化"></a>Mod优化</h3><p>如果你是mc1.14+ 推荐使用Fabric作为mod加载器 因为它更加轻量化<br>本次将以1.16.5作为演示<br>首先安装一个新游戏版本并安装Fabric+API<br>本期采用的优化mod为元素周期表全家桶 基本可以媲美Optifine<br>(PS 仅支持1.16及以上版本 1.12.2的话还是用Optifine吧)<br>这期视频主要讲如何使用 想知道原理的可以看<a target="_blank" rel="noopener" href="http://mcmod.cn/">mc百科</a><br><strong>Sodium</strong> <a target="_blank" rel="noopener" href="https://modrinth.com/mod/sodium">https://modrinth.com/mod/sodium</a><br><strong>Lithium</strong> <a target="_blank" rel="noopener" href="https://modrinth.com/mod/lithium">https://modrinth.com/mod/lithium</a><br><strong>Iris Shadowers</strong> <a target="_blank" rel="noopener" href="https://modrinth.com/mod/iris">https://modrinth.com/mod/iris</a><br><strong>Phosphor</strong> <a target="_blank" rel="noopener" href="https://modrinth.com/mod/phosphor">https://modrinth.com/mod/phosphor</a><br><strong>Indium</strong> <a target="_blank" rel="noopener" href="https://modrinth.com/mod/indium">https://modrinth.com/mod/indium</a><br><strong>LambDynamicLights</strong> <a target="_blank" rel="noopener" href="https://modrinth.com/mod/lambdynamiclights">https://modrinth.com/mod/lambdynamiclights</a><br>还有一个Mod Menu 可以看到你安装的mod并设置<br><strong>Modmenu</strong> <a target="_blank" rel="noopener" href="https://modrinth.com/mod/modmenu">https://modrinth.com/mod/modmenu</a><br>点击Version 找到对应版本后 下载并拖入启动器里的<code>模组管理</code>即可<br>(HMCL和PCL2应该都有 其他启动器打开mods文件夹拖入)<br>然后进入游戏内优化一下视频设置 按需调整 ……<br>（懒得写了 看视频）</p>
+<h3 id="Ending"><a href="#Ending" class="headerlink" title="Ending"></a>Ending</h3><p>OK 各位那么这期视频就这样 如果能对您产生帮助那就再好不过了 那我们下期再见<br>（上期鸽了 今天不求三连了（我就没求过） 大家想给就给呗 不给也没事）</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://leoyin2121.top">Leo Yin</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://leoyin2121.top/posts/4db3a76/">https://leoyin2121.top/posts/4db3a76/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://leoyin2121.top" target="_blank">LyinF Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/MC/">MC</a><a class="post-meta__tags" href="/tags/%E4%BC%98%E5%8C%96/">优化</a></div><div class="post_share"><div class="social-share" data-image="https://s1.ax1x.com/2022/05/03/OACpd0.png" data-sites="wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.staticfile.org/butterfly-extsrc/1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.staticfile.org/butterfly-extsrc/1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/posts/2526552/"><img class="prev-cover" src="https://s1.ax1x.com/2022/05/03/OACpd0.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Linux服务器如何配置Frp</div></div></a></div><div class="next-post pull-right"><a href="/posts/53e6f43d/"><img class="next-cover" src="https://s1.ax1x.com/2022/05/03/OACpd0.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">弹琴</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/posts/2fd11537/" title="0成本搭建Minecraft服务器"><img class="cover" src="https://s1.ax1x.com/2022/05/03/OACpd0.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-05-11</div><div class="title">0成本搭建Minecraft服务器</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://s1.ax1x.com/2022/04/08/Lpxx2R.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Leo Yin</div><div class="author-info__description">一个喜欢折腾的初中生</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">18</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">9</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://space.bilibili.com/531277104"><i class="fa-brands fa-bilibili"></i><span>我的B站空间</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/leoyin2121" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:yzq1021997@outlook.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">这是 Leo Yin 的个人博客</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Minecraft-%E4%BC%98%E5%8C%96%E6%8C%87%E5%8D%97"><span class="toc-number">1.</span> <span class="toc-text">Minecraft 优化指南</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#MC%E7%89%88%E6%9C%AC"><span class="toc-number">1.1.</span> <span class="toc-text">MC版本</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Java%E7%89%88%E6%9C%AC%E9%80%89%E6%8B%A9"><span class="toc-number">1.2.</span> <span class="toc-text">Java版本选择</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B8%B8%E6%88%8F%E5%86%85%E4%BC%98%E5%8C%96"><span class="toc-number">1.3.</span> <span class="toc-text">游戏内优化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Mod%E4%BC%98%E5%8C%96"><span class="toc-number">1.4.</span> <span class="toc-text">Mod优化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Ending"><span class="toc-number">1.5.</span> <span class="toc-text">Ending</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/16107/" title="Hello World">Hello World</a><time datetime="2022-06-24T03:13:55.884Z" title="发表于 2022-06-24 11:13:55">2022-06-24</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/2526552/" title="Linux服务器如何配置Frp">Linux服务器如何配置Frp</a><time datetime="2022-05-31T05:55:01.000Z" title="发表于 2022-05-31 13:55:01">2022-05-31</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/4db3a76/" title="Minecraft优化指南">Minecraft优化指南</a><time datetime="2022-05-27T09:39:55.000Z" title="发表于 2022-05-27 17:39:55">2022-05-27</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/53e6f43d/" title="弹琴">弹琴</a><time datetime="2022-05-20T11:42:49.000Z" title="发表于 2022-05-20 19:42:49">2022-05-20</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/2fd11537/" title="0成本搭建Minecraft服务器">0成本搭建Minecraft服务器</a><time datetime="2022-05-11T02:02:45.000Z" title="发表于 2022-05-11 10:02:45">2022-05-11</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2022 By Leo Yin</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.staticfile.org/fancyapps-ui/4.0.27/fancybox.umd.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>(()=>{
+  const init = () => {
+    twikoo.init(Object.assign({
+      el: '#twikoo-wrap',
+      envId: 'https://leo-twikoo.vercel.app/',
+      region: '',
+      onCommentLoaded: function () {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      }
+    }, null))
+  }
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: 'https://leo-twikoo.vercel.app/',
+      region: '',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(function (res) {
+      countELement.innerText = res[0].count
+    }).catch(function (err) {
+      console.error(err);
+    });
+  }
+
+  const runFn = () => {
+    init()
+    
+  }
+
+  const loadTwikoo = () => {
+    if (typeof twikoo === 'object') {
+      setTimeout(runFn,0)
+      return
+    } 
+    getScript('https://cdn.staticfile.org/twikoo/1.5.11/twikoo.all.min.js').then(runFn)
+  }
+
+  if ('Twikoo' === 'Twikoo' || !false) {
+    if (false) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = () => {
+      loadTwikoo()
+    }
+  }
+})()</script></div><script defer="defer" id="fluttering_ribbon" mobile="false" src="https://cdn.staticfile.org/butterfly-extsrc/1.1.3/canvas-fluttering-ribbon.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

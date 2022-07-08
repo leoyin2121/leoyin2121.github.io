@@ -1,0 +1,393 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search> 
+  
+  
+    
+    <entry>
+      <title>Hello World</title>
+      <link href="/posts/16107/"/>
+      <url>/posts/16107/</url>
+      
+        <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p><h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p><h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p><h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Linux服务器如何配置Frp</title>
+      <link href="/posts/2526552/"/>
+      <url>/posts/2526552/</url>
+      
+        <content type="html"><![CDATA[<h1 id="Linux服务器如何配置Frp"><a href="#Linux服务器如何配置Frp" class="headerlink" title="Linux服务器如何配置Frp"></a>Linux服务器如何配置Frp</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>根据<a href="https://gofrp.org/docs/overview/">Frp官网的介绍</a> 我们可以得知<br>“Frp是一个专注于内网穿透的高性能的反向代理应用，支持 TCP、UDP、HTTP、HTTPS 等多种协议。可以将内网服务以安全、便捷的方式通过具有公网 IP 节点的中转暴露到公网。”<br>总结就是一个内网穿透的工具 我们可以用有公网IP的服务器作为frp的服务端<br>可以做到 例如：在外访问自己家中的NAS 开设Minecraft服务器 和小伙伴联机 ……</p><h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><p>首先 我们需要一台服务器 我用的是腾讯云的<a href="https://cloud.tencent.com/product/lighthouse">轻量应用服务器</a><br><a href="https://imgtu.com/i/LHFqrq"><img src="https://s1.ax1x.com/2022/04/26/LHFqrq.png" alt="LHFqrq.png"></a><br>地区尽量选和你近的 要建站或者干些别的建议选择中国香港的<br>系统 Debian 11 或 Ubuntu 20 都差不多<br>买完服务器会自动进入后台 右上角点击重制密码 设置一个密码<br>准备工作完成</p><h2 id="开始搭建"><a href="#开始搭建" class="headerlink" title="开始搭建"></a>开始搭建</h2><h3 id="SSH"><a href="#SSH" class="headerlink" title="SSH"></a>SSH</h3><p>首先我们打开终端（Mac&#x2F;Linux）或Windows Terminal&#x2F;Powershell (Windows)<br>输入</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh root@公网IP</span><br></pre></td></tr></table></figure><p>公网IP在服务器后台获取<br>输入密码（不显示！！！）<br>然后一般显示这样<br><a href="https://imgtu.com/i/X8iTiD"><img src="https://s1.ax1x.com/2022/05/31/X8iTiD.jpg" alt="X8iTiD.jpg"></a></p><h3 id="更新软件包"><a href="#更新软件包" class="headerlink" title="更新软件包"></a>更新软件包</h3><p>首先输入</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt update &amp;&amp; sudo apt upgrade</span><br></pre></td></tr></table></figure><h3 id="下载文件"><a href="#下载文件" class="headerlink" title="下载文件"></a>下载文件</h3><p>然后下载Frp的安装文件<br><a href="https://github.com/fatedier/frp/releases">https://github.com/fatedier/frp/releases</a><br>找到<code>frp_x.xx.x_linux_amd64.tar.gz</code><br>(这里x是指版本号 Frp更新很快 一般选择最新的)<br>右键复制链接 回到ssh 输入</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget <span class="string">&#x27;粘贴刚刚复制的链接&#x27;</span></span><br></pre></td></tr></table></figure><p>由于链接在Github 可能下载不了 不过tx云服务器有加速线路<br>一般可以正常下载<br>然后输入</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -xzvf frp_x.xx.x_linux_amd64.tar.gz</span><br></pre></td></tr></table></figure><p>（版本号自行替换）<br>然后输入<code>ls</code>查看一下是否解压完成</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">rm</span> -rf frp_x.xx.x_linux_amd64.tar.gz</span><br></pre></td></tr></table></figure><p>删除压缩包<br>然后给它改个名字</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mv frp_x.xx.x_linux_amd64 frps</span><br></pre></td></tr></table></figure><h3 id="进行配置"><a href="#进行配置" class="headerlink" title="进行配置"></a>进行配置</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd frps</span><br></pre></td></tr></table></figure><p>进入frp目录 编辑一下配置文件</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nano frps.ini</span><br></pre></td></tr></table></figure><p>删除原有配置 改为</p><figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[common]</span></span><br><span class="line"><span class="attr">bind_port</span> = <span class="number">7000</span></span><br><span class="line"><span class="attr">vhost_http_port</span> = <span class="number">7002</span></span><br><span class="line"><span class="attr">vhost_https_port</span> = <span class="number">7003</span></span><br><span class="line"><span class="attr">authentication_method</span> = token</span><br><span class="line"><span class="attr">token</span> = <span class="string">&quot;你的密钥&quot;</span></span><br><span class="line"><span class="attr">dashboard_port</span> = <span class="number">7001</span></span><br><span class="line"><span class="attr">dashboard_user</span> = <span class="string">&quot;admin&quot;</span></span><br><span class="line"><span class="attr">dashboard_pwd</span> = <span class="string">&quot;你的密码&quot;</span></span><br></pre></td></tr></table></figure><p>小白这样配置就行了 打引号的内容可以自己换<br>Ctrl+O Ctrl+X 保存退出<br>然后可以把多余文件删除</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">rm</span> -rf frpc &amp;&amp; <span class="built_in">rm</span> -rf frpc.ini &amp;&amp; <span class="built_in">rm</span> -rf frpc_full.ini</span><br></pre></td></tr></table></figure><h3 id="运行"><a href="#运行" class="headerlink" title="运行"></a>运行</h3><p>然后输入</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./frps -c ./frps.ini</span><br></pre></td></tr></table></figure><p>一般看到successful就成功了<br><a href="https://imgtu.com/i/X8kr34"><img src="https://s1.ax1x.com/2022/05/31/X8kr34.png" alt="X8kr34.png"></a><br>然后一般我们要配置到<code>systemd</code>内 实现开机自启</p><h3 id="开机自启"><a href="#开机自启" class="headerlink" title="开机自启"></a>开机自启</h3><p>腾讯云服务器自带systemd 无需额外安装<br>不放心的话可以输入</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install systemd</span><br></pre></td></tr></table></figure><p>然后编辑一下配置</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nano /etc/systemd/system/frps.service</span><br></pre></td></tr></table></figure><p>写入</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[Unit]</span><br><span class="line">Description = frps</span><br><span class="line">After = network.target syslog.target</span><br><span class="line">Wants = network.target</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">Type = simple</span><br><span class="line"># 启动frps的命令，需修改为你frps的路径 </span><br><span class="line">ExecStart = /root/frps -c /root/frps/frps.ini</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy = multi-user.target</span><br></pre></td></tr></table></figure><p>如果你是按照博客进行配置的 路径一般是这个<br>然后 Ctrl+O Ctrl+X 保存并退出<br>最后启动一下</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl start frps</span><br></pre></td></tr></table></figure><p>剩下的命令在这</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 停止frp</span></span><br><span class="line">systemctl stop frps</span><br><span class="line"><span class="comment"># 重启frp</span></span><br><span class="line">systemctl restart frps</span><br><span class="line"><span class="comment"># 查看frp状态</span></span><br><span class="line">systemctl status frps</span><br></pre></td></tr></table></figure><p>我们配置一下开机自启</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl <span class="built_in">enable</span> frps</span><br></pre></td></tr></table></figure><p>大功告成<br><strong>记得去服务器后台防火墙放行<code>7000-7003</code>端口!!!</strong></p><h2 id="本地使用"><a href="#本地使用" class="headerlink" title="本地使用"></a>本地使用</h2><p>首先前往下载页面<br><a href="https://github.com/fatedier/frp/releases">https://github.com/fatedier/frp/releases</a><br>下载对应的系统版本 一般是 <code>Windows AMD64</code><br>Arm Mac <code>Darwin Arm64</code><br>intel Mac <code>Darwin Amd64</code><br>然后解压到你熟悉的位置<br>编辑<code>frpc.ini</code></p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[common]</span><br><span class="line">server_addr = 服务器IP</span><br><span class="line">server_port = 7000</span><br><span class="line">token = 你的密钥</span><br><span class="line"></span><br><span class="line">[yourName]</span><br><span class="line">type = tcp</span><br><span class="line">local_ip = 127.0.0.1</span><br><span class="line">local_port = 你的本地端口</span><br><span class="line">remote_port = 服务器远程端口</span><br></pre></td></tr></table></figure><p><strong>记得把 <code>remote port</code> 也在服务器防火墙放行!!!</strong><br>然后打开终端 进入文件夹<br>输入</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./frpc -c frpc.ini</span><br></pre></td></tr></table></figure><h2 id="Ending"><a href="#Ending" class="headerlink" title="Ending"></a>Ending</h2><p>这次就彻底完工了<br>参考资料 <a href="https://gofrp.org/">https://gofrp.org/</a><br>Byebye</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 技术 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 服务器 </tag>
+            
+            <tag> Linux </tag>
+            
+            <tag> Frp </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Minecraft优化指南</title>
+      <link href="/posts/4db3a76/"/>
+      <url>/posts/4db3a76/</url>
+      
+        <content type="html"><![CDATA[<h2 id="Minecraft-优化指南"><a href="#Minecraft-优化指南" class="headerlink" title="Minecraft 优化指南"></a>Minecraft 优化指南</h2><p>Hello 大家好 欢迎收看本期视频 今天教大家如何优化自己的MC 拯救渣机<br>这期主要是教程 不会涉及太多的原理<br>（PS :如果你的电脑太渣连原版都只有5、6帧可能装了优化mod后也没啥用）</p><h3 id="MC版本"><a href="#MC版本" class="headerlink" title="MC版本"></a>MC版本</h3><p>Minecraft版本有很多 每个版本的特性和更新都不同 优化也可能有很大差异<br>所以优化的第一步 就是选择一个MC版本了<br>首先 如果你是比较旧的电脑的话 我建议你不要玩最新的版本（8、9年前的那种）<br>如果你在最新版<code>1.18.2</code>的帧数很低的话（10针以下） 那就不建议你玩这个版本了<br>目前来说对于渣机来说比较友好的我个人认为是<code>1.16.5</code>和<code>1.12.2</code><br>这两个版本总体来说比较稳定 比较建议渣机使用<br>如果你是近两年购买的机器 那么还是建议你玩最新版的 因为mc本来就不是很吃配置 近两年来即使是轻薄本应该也是可以保证至少60FPS的运行的<br>好的关于MC版本的选择就到这里 接下来我们讲解Java的版本</p><h3 id="Java版本选择"><a href="#Java版本选择" class="headerlink" title="Java版本选择"></a>Java版本选择</h3><p>众所周知 MC 1.17及以后强制使用了<code>Java17</code> 在此就不多说了<br>我们主要讲讲1.16及以下<br>一般情况下我们玩MC用的都是<code>Java8</code> 而Java8至今也算是比较老了 如果你现在用的是Java8玩MC 同时帧数比较低的话 可以尝试使用<code>Java11</code> 这也是一个LTS(长期支持版) 可能会有更高的帧数<br>（PS: 貌似MC 1.13+版本才能用？ 例如1.16.5 低版本可能会有点bug 1.12没测）<br>Java11 我用的是Zulu的JDK <a href="https://www.oracle.com/cn/java/technologies/javase/jdk11-archive-downloads.html">Oracle JDK官网</a>需要登录 比较麻烦 所以我用的是<a href="https://www.azul.com/downloads/?version=java-11-lts&os=windows&architecture=x86-64-bit&package=jdk">Zulu JDK官网</a>一个OpenJDK的发行版<br>下载这个.msi的安装包并安装就好了</p><h3 id="游戏内优化"><a href="#游戏内优化" class="headerlink" title="游戏内优化"></a>游戏内优化</h3><p>这个和后面的Mod优化一起讲</p><h3 id="Mod优化"><a href="#Mod优化" class="headerlink" title="Mod优化"></a>Mod优化</h3><p>如果你是mc1.14+ 推荐使用Fabric作为mod加载器 因为它更加轻量化<br>本次将以1.16.5作为演示<br>首先安装一个新游戏版本并安装Fabric+API<br>本期采用的优化mod为元素周期表全家桶 基本可以媲美Optifine<br>(PS 仅支持1.16及以上版本 1.12.2的话还是用Optifine吧)<br>这期视频主要讲如何使用 想知道原理的可以看<a href="http://mcmod.cn/">mc百科</a><br><strong>Sodium</strong> <a href="https://modrinth.com/mod/sodium">https://modrinth.com/mod/sodium</a><br><strong>Lithium</strong> <a href="https://modrinth.com/mod/lithium">https://modrinth.com/mod/lithium</a><br><strong>Iris Shadowers</strong> <a href="https://modrinth.com/mod/iris">https://modrinth.com/mod/iris</a><br><strong>Phosphor</strong> <a href="https://modrinth.com/mod/phosphor">https://modrinth.com/mod/phosphor</a><br><strong>Indium</strong> <a href="https://modrinth.com/mod/indium">https://modrinth.com/mod/indium</a><br><strong>LambDynamicLights</strong> <a href="https://modrinth.com/mod/lambdynamiclights">https://modrinth.com/mod/lambdynamiclights</a><br>还有一个Mod Menu 可以看到你安装的mod并设置<br><strong>Modmenu</strong> <a href="https://modrinth.com/mod/modmenu">https://modrinth.com/mod/modmenu</a><br>点击Version 找到对应版本后 下载并拖入启动器里的<code>模组管理</code>即可<br>(HMCL和PCL2应该都有 其他启动器打开mods文件夹拖入)<br>然后进入游戏内优化一下视频设置 按需调整 ……<br>（懒得写了 看视频）</p><h3 id="Ending"><a href="#Ending" class="headerlink" title="Ending"></a>Ending</h3><p>OK 各位那么这期视频就这样 如果能对您产生帮助那就再好不过了 那我们下期再见<br>（上期鸽了 今天不求三连了（我就没求过） 大家想给就给呗 不给也没事）</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 游戏 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> MC </tag>
+            
+            <tag> 优化 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>弹琴</title>
+      <link href="/posts/53e6f43d/"/>
+      <url>/posts/53e6f43d/</url>
+      
+        <content type="html"><![CDATA[<p>今天是周末，我即将拥有一个宁静悠闲的上午。这几日天气不错，阳光在空中闪耀，却又不怎么热，微风柔和地吹着，如同一股清流，云朵也在空中漂浮，缓慢挪动。这使得我心情舒畅，显得悠闲自在，是个外出练琴的好日子，正所谓熟能生巧，机会总是稍纵即逝的，所以我下定决心去练琴。联想着那清脆的拨弦，那有节奏感的扫弦，音符从我的吉他中翩翩起舞，每一小节都让人感到放松和自然。</p><p>清晨，我趁着这大好时光，背上有些沾上灰尘的和我人差不多高的琴包，带着折叠椅和琴谱，慢慢地步行到小区附近的公园里。那是一条绿树成荫的林道，东侧邻着一条小河，河水清澈见底，碧绿碧绿的，西侧是公园中心的小舞台和儿童娱乐区，这里长满了白桦树和云杉树，错落有致地分布在这儿，从林道的结尾像远处眺望，可以隐隐约约地看到一个篮球场，甚至还能听到一些微弱的拍球声，有力、干脆，近处是一幢幢高大的居民楼，整整齐齐的排列着，充满人间烟火。</p><p>由于是早晨，公园里十分安静，除了鸟叫和蝉鸣，只有一些年轻人正活力四射地沿着林道进行着晨跑，几乎他们所有都跑得火热朝天，满头大汗，可他们却依然动作敏捷，脚步轻快灵活，像极了鼓的声音，仿佛乐在其中，还有些老人也在舞台旁边练习太极拳和练剑，他们身着宽敞的大衣，全神贯注地练习着，沉浸在自己的乐趣之中，一切都是如此悠闲，让人心神向往。</p><p>太阳逐渐升高，早晨来到公园里的人吗也渐渐离去，我也不得不干起正事来，我放下带来的折叠凳，又拿出谱架放好，拿出尘封已久的吉他，坐下来，回想起之前看到的美丽景色，我放好谱子，调好音色，慢慢地拨奏我的琴弦，舒缓的音乐慢慢响起，我按照琴谱，一步一步地拨弦，从最简单的指法变得逐渐复杂起来，但我依旧不骄不躁，遇到不会弹的地方就放慢速度，反复多次练习，不知为何，平时让我感到枯燥无味的分解和弦练习却令我感到有些乐趣，扫弦更是得来完全不费功夫，甚至还引来了在公园里的路人的围观，轻轻松松就把之前我并不熟练的一首练习曲掌握透彻了。</p><p>一切看似很奇怪，却又有合理之处，看着晨跑的年轻人和练习太极拳的老人，他们的那种“乐在其中”不也影响了我，使我学习颇多，以后练习也更有方法了不少，看似他们没有做什么，但我在这个环境之下“帮助”了我呢？</p><p>转眼间，已经到中午了，走在回家吃饭的路上，我又回忆起上午发生的事，美丽的风景、舒适的环境、悠闲的人，我高兴得笑了，感觉心里无比畅快……</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 作文 </category>
+          
+      </categories>
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>0成本搭建Minecraft服务器</title>
+      <link href="/posts/2fd11537/"/>
+      <url>/posts/2fd11537/</url>
+      
+        <content type="html"><![CDATA[<h2 id="0成本搭建Minecraft服务器"><a href="#0成本搭建Minecraft服务器" class="headerlink" title="0成本搭建Minecraft服务器"></a>0成本搭建Minecraft服务器</h2><h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>上次视频分享了如何用服务器搭建MC服务器<br>但考虑到有很多学生党是没钱买服务器的<br>又或者买的服务器配置不够高<br>所以今天教大家用自己电脑开Minecraft服务器<br>本期视频主要是面向小白的<br>所以会比较长一点 还请大家耐心观看<br>有任何问题也可以在评论区留言 UP尽量回<br>哦对了 这期视频是介绍Java的开服方式<br>如果你是基岩版就可以退出视频了<br>基岩版的话如果有人需要后面也会考虑出一期<br>好的 那么我们开始正题</p><h4 id="安装Java"><a href="#安装Java" class="headerlink" title="安装Java"></a>安装Java</h4><p>首先你需要一台电脑 (认真)<br>然后要弄清你开服务器的版本<br>MC 1.17及以上 请安装Java 17<br>1.16及以下 请选择Java 8</p><h5 id="Java-17"><a href="#Java-17" class="headerlink" title="Java 17"></a>Java 17</h5><p><a href="https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html">https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html</a><br>这里按照你的系统进行选择<br>Arm芯片的Mac选择 <strong>macOS Arm 64 DMG Installer</strong><br>Intel的Mac选择 <strong>macOS x64 DMG Installer</strong><br>Windows系统选择 <strong>Windows x64 Installer</strong></p><h5 id="Java-8"><a href="#Java-8" class="headerlink" title="Java 8"></a>Java 8</h5><p><a href="https://www.oracle.com/java/technologies/javase/javase8-archive-downloads.html">https://www.oracle.com/java/technologies/javase/javase8-archive-downloads.html</a><br>Arm的Mac和Intel的Mac都选择 <strong>Mac OS X x64</strong><br>Windows选择 <strong>Windows x64</strong><br>然后安装……<br>这个应该不用我教了吧<br>直接双击安装文件一直下一步就好了</p><h4 id="下载服务端"><a href="#下载服务端" class="headerlink" title="下载服务端"></a>下载服务端</h4><p>MC有很多服务端 我上一期开服的视频也有讲<br>需要的同学可以自己去我个人主页看<a href="https://www.bilibili.com/video/BV1LP4y1K7vA/">上一期</a>的 00:48<br>这里以Paper为例子<br>打开 <a href="https://papermc.io/downloads">https://papermc.io/downloads</a><br>一般下载最新的<br>我这里以1.18.1为栗<br>点More 一直到1.18.1<br>然后点蓝色的按钮下载<br>那旧版本咋办呢？<br>往下拉 找到Legacy按钮<br>点一下 两个问题都选No<br>点Submit<br>就可以下载旧版本了<br>然后我们还要下载一个原版服务端 <a href="https://getbukkit.org/download/vanilla">https://getbukkit.org/download/vanilla</a> 在这里可以下载 注意要和paper的版本一样<br>这一步也算是完成了</p><h4 id="启动服务端"><a href="#启动服务端" class="headerlink" title="启动服务端"></a>启动服务端</h4><p>首先 在你熟悉的目录新建文件夹<br>然后我们把下载好的服务端文件移动到这里<br>然后Mac用户打开终端<br>Windows用户的话<br>Windows 7&#x2F;8 打开CMD<br>Windows 10 打开Powershell<br>Windows 11 打开Windows Terminal<br>把文件夹拖到终端内 就进入了这个文件夹<br>然后输入</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -Xmx2048M -Xms1024M -jar 你的文件名.jar nogui</span><br></pre></td></tr></table></figure><p>Xmx为最大内存 Xms为最小内存 可以按照实际情况调整<br>然后会卡在下载原版端文件这里<br>我们把下载好的原版文件 移动到cache文件夹里 改成cache里那个文件的名字 并把原来的删了<br>然后第一次一般会启动失败 因为你没同意服务器协议<br>打开 <strong>Eula.txt</strong><br>将false改为true<br>Ctrl+S 或Command+S 保存<br>然后再试输入</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -Xmx2048M -Xms1024M -jar 你的文件名.jar nogui</span><br></pre></td></tr></table></figure><p>然后等待出现 Done!字样就说明开服成功了<br>我们先输入stop关闭服务器<br>然后可以看到服务端文件夹里生成了很多文件<br>server.properties是服务器的配置文件<br>这里online-mode设置为true就代表仅正版玩家可进入 false则盗版玩家也可加入<br>view-distance为视距 建议改到4<br>要自定义种子就用Ctrl+F 或Command+F搜索是否有level-seed一行<br>如果没有就添加</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">level-seed=种子号就可以了</span><br></pre></td></tr></table></figure><p>然后开服就算是完成一半了<br>我们还需要进行内网穿透</p><h4 id="内网穿透"><a href="#内网穿透" class="headerlink" title="内网穿透"></a>内网穿透</h4><p>我这里使用的内网穿透软件是Natapp 你也可以用别的<br>打开Natapp官网 <a href="https://natapp.cn/">https://natapp.cn/</a><br>免费注册账号并实名<br>点击购买隧道——免费隧道<br>隧道协议选择TCP<br>本地端口填25565 也就是MC的默认端口<br>名称随意 本地地址保持默认<br>然后复制authtoken 一会要用<br>点击客户端下载 自行选择系统<br>一般是Windows 64位<br>我这里因为是M1 Mac 所以选 MacOS Arm64<br>然后找个位置存放natapp程序<br>拖拽到终端进入<br>Mac用户先输入(Windows不用)</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod a+x natapp</span><br></pre></td></tr></table></figure><p>然后输入</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./natapp -authtoken=刚刚复制的token</span><br></pre></td></tr></table></figure><p>Mac用户还需要打开设置 安全性与隐私——通用 点击“仍要打开”<br>回到终端 再次输入上一条命令<br>看到这样就是成功了<br>复制tcp:&#x2F;&#x2F;后的内容 启动游戏<br>点击多人游戏——添加服务器<br>IP地址填之前复制的内容 名称随意<br>然后就可以开始生存了</p><h4 id="Ending"><a href="#Ending" class="headerlink" title="Ending"></a>Ending</h4><p>OK 各位这就是本期视频的全部内容了 文案我也会放在简介处 需要的自取<br>如果对你有帮助 那就是对我最大的支持 你有什么意见或想法也可以在评论区讨论 我们下期再见 Byebye</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 游戏 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> MC </tag>
+            
+            <tag> 服务器 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Mac软件推荐</title>
+      <link href="/posts/f13c96c7/"/>
+      <url>/posts/f13c96c7/</url>
+      
+        <content type="html"><![CDATA[<h2 id="Mac软件推荐"><a href="#Mac软件推荐" class="headerlink" title="Mac软件推荐"></a>Mac软件推荐</h2><p>Hello 大家好 欢迎收看本期的视频<br>今天主要来分享下 我使用MacOS半年多的一些常用软件<br>好的 我们废话不多说 直接进入正题</p><h3 id="第1款-Mos"><a href="#第1款-Mos" class="headerlink" title="第1款 Mos"></a>第1款 Mos</h3><p>如果你喜欢在Mac上用鼠标 那么一定不要错个它<br>因为MacOS对第三方鼠标不是很友好 所以就诞生了这款软件<br>这款软件的主要功能就是平滑滚动 让你的鼠标拥有触控版的体验<br>说的话可能不明显，这里直接上演示<br>可以看到关闭Mos后页面明显比较卡顿，开启以后就好很多了<br>下载地址 <a href="https://mos.caldis.me/">https://mos.caldis.me/</a> 由于这是个开源软件 所以你也可以去Github下载</p><h3 id="第2款-腾讯柠檬"><a href="#第2款-腾讯柠檬" class="headerlink" title="第2款 腾讯柠檬"></a>第2款 腾讯柠檬</h3><p>等会……腾讯……emmm<br>诶 别急着走<br>虽然这款软件是TX开发的，但由于MacOS较为封闭，使得它不敢为非作歹，只好当个老实软件<br>我用它的主要功能有3个<br>1 清理垃圾、缓存<br>直接点击绿色的开始扫描 就可以扫描你Mac里的垃圾，对小白友好<br>2 应用卸载<br>我这个人比较有强迫症 用它就能把你Mac里的大多数软件卸载干净<br>注意是大多数 代表还有一小部分是不行的 还是得自己删文件<br>3 开机启动项管理<br>Mac上很多软件都会开机自启<br>但我基本上就需要开那么两三个小软件<br>直接点击你不需要启动的项目 就OK了<br>都算比较简单<br>官网：<a href="https://lemon.qq.com/">https://lemon.qq.com/</a> App Store的版本由于苹果的限制功能不全 建议下载官网版</p><h3 id="第3款-IINA"><a href="#第3款-IINA" class="headerlink" title="第3款 IINA"></a>第3款 IINA</h3><p>IINA是Mac一款极其好用的视频播放器<br>支持很多格式 例如 mp4 mov mkv avi 基本网上主流的视频格式都支持<br>而且还可以在线播放视频的URL地址 经常看视频的同学可以装一个<br>官网 <a href="https://iina.io/">https://iina.io/</a></p><h3 id="第4款-Keka"><a href="#第4款-Keka" class="headerlink" title="第4款 Keka"></a>第4款 Keka</h3><p>这是一款解压缩软件 支持 zip rar 7z tar.gz tar.xz 等格式的解压缩 （rar格式仅支持解压）<br>简洁小巧 支持格式多 还可以排除Mac资源文件 为何不选呢<br>官网 ：<a href="https://www.keka.io/en/">https://www.keka.io/en/</a> 官网版是免费的 大家有条件可以去App Store付费支持开发者</p><h3 id="第5款-NeatDownloadManager"><a href="#第5款-NeatDownloadManager" class="headerlink" title="第5款 NeatDownloadManager"></a>第5款 NeatDownloadManager</h3><p>NDM下载器想必各位都知道了 它也是有Mac版的<br>这款软件主要就是利用多线程下载 提高下载速度<br>当然你有些该慢的还是慢<br>比如某些网站就特意限制了多线程下载以及国外的网站 非常令人抓狂<br>官网： <a href="http://neatdownloadmanager.com/index.php/en/">http://neatdownloadmanager.com/index.php/en/</a><br>那我们今天就推荐这5款吧（估计也没下期了吧）<br>你有喜欢的Mac软件也可以在弹幕或者评论留言<br>大家的观看就是我更新的最大动力<br>我们下期再见！</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 技术 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Mac </tag>
+            
+            <tag> 软件 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>我的Halo博客搭建指南</title>
+      <link href="/posts/12763379/"/>
+      <url>/posts/12763379/</url>
+      
+        <content type="html"><![CDATA[<h1 id="我的Halo博客搭建指南"><a href="#我的Halo博客搭建指南" class="headerlink" title="我的Halo博客搭建指南"></a>我的Halo博客搭建指南</h1><h3 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h3><p>我的个人博客最近从Hexo迁移到了Halo（<strong>太闲了</strong>）所以刚好写篇（<strong>水</strong>）文章讲讲我是如何搭建的。</p><h3 id="服务器-域名购买"><a href="#服务器-域名购买" class="headerlink" title="服务器+域名购买"></a>服务器+域名购买</h3><p>Halo博客一般是部署在服务器上的，所以我们需要一台服务器，我个人使用的是<a href="https://cloud.tencent.com/">腾讯云</a>的Lighthouse，你也可以用别的服务商，新用户一般会有优惠。<br>如果你只是自己玩玩服务器的话，建议使用中国香港或海外的服务器，不用备案。然后你还需要一个域名，让大家用平时的网址访问，域名也可以在腾讯云买，但需要实名认证，（域名不需要备案，绑定中国大陆服务器才要），我试了好几次死活不行，所以使用<a href="https://www.namesilo.com/">Namesilo</a>这个平台，网上教程很多，在此就不再赘述，就和你平时网购差不多。<br>我自己使用的是腾讯云的<strong>2H2G</strong>香港机型，这个配置在相同价格还算不错了，建议月付，不然后悔了比较麻烦。<br>系统建议选择 Debian 11 (Ubuntu 20 也不错) 然后等待一会儿 在腾讯云控制台中的轻量应用服务器中就可以看到你的机器了，点击进入详情页，在右上角重制密码，基本步骤就算做完了，如果你装错系统可以在右上角重装<br><a href="https://imgtu.com/i/LHFqrq"><img src="https://s1.ax1x.com/2022/04/26/LHFqrq.md.png" alt="LHFqrq.md.png"></a></p><h3 id="SSH-连接"><a href="#SSH-连接" class="headerlink" title="SSH 连接"></a>SSH 连接</h3><p>Windows 和 Mac 用户都可以使用<a href="https://www.termius.com/">Termius</a>这个软件，<br>或者使用Windows Terminal或终端，想用Termius的同学可以网上搜素一下使用教程，这里为方便直接使用终端操作，输入</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh root@你的公网IP</span><br></pre></td></tr></table></figure><p>公网IP一般在云服务器后台可以看到，记住不要轻易泄漏，可能遭到“好心人”的攻击。<br>然后输入yes,代表记录这次连接<br>然后输入密码 <strong>（这里密码是不显示的！！！）</strong></p><h3 id="安装宝塔面板以及基本设置"><a href="#安装宝塔面板以及基本设置" class="headerlink" title="安装宝塔面板以及基本设置"></a>安装宝塔面板以及基本设置</h3><p><a href="https://bt.cn/">宝塔面板</a>是一个帮助小白用GUI管理Linux服务器的好工具，部署也极其简单<br>首先更新软件包（分开执行）</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt update</span><br><span class="line">sudo apt upgrade</span><br></pre></td></tr></table></figure><p>然后正式安装</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># Ubuntu</span><br><span class="line">wget -O install.sh http://download.bt.cn/install/install-ubuntu_6.0.sh &amp;&amp; sudo bash install.sh ed8484bec</span><br></pre></td></tr></table></figure><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># Debian</span><br><span class="line">wget -O install.sh http://download.bt.cn/install/install-ubuntu_6.0.sh &amp;&amp; bash install.sh ed8484bec</span><br></pre></td></tr></table></figure><p><strong>（#那行 不要复制进去）</strong><br>在终端内粘贴以上的命令 <strong>（选择对应的系统，我用的是Debian）</strong><br>完成以后一般会显示这样<br><a href="https://imgtu.com/i/LHFIPg"><img src="https://s1.ax1x.com/2022/04/26/LHFIPg.md.jpg" alt="LHFIPg.md.jpg"></a><br>会显示你的默认账户密码以及登录地址 <strong>（是外网登录的那个）建议复制登录地址，一会要用</strong><br>你也可以在终端内输入 bt 再输入5 改密码 再输入bt 6 改用户名就可以了<br>然后在服务器后台防火墙放行端口 <strong>（建议放行所有TCP，因为宝塔自带防火墙，UDP有需要再放）</strong><br><a href="https://imgtu.com/i/LHFha8"><img src="https://s1.ax1x.com/2022/04/26/LHFha8.png" alt="LHFha8.png"></a><br>然后访问上面的登录地址输入你的账户密码，同意用户协议，注册登录一个宝塔账户<br>一般过一会会跳出安装环境，我建议你先安装<strong>Nginx（1.21）和FTP</strong> ，其他的可以用<strong>Docker</strong>安装，更干净（把勾去掉就行了），<br><a href="https://imgtu.com/i/LHFoGQ"><img src="https://s1.ax1x.com/2022/04/26/LHFoGQ.png" alt="LHFoGQ.png"></a><br>然后在消息盒子查看进度，等待安装完成。<br>接着你可以自己鼓捣研究一下，能看懂中文一般没有啥障碍（doge）</p><h3 id="安装Docker（推荐用官方的一键安装脚本，适合小白）"><a href="#安装Docker（推荐用官方的一键安装脚本，适合小白）" class="headerlink" title="安装Docker（推荐用官方的一键安装脚本，适合小白）"></a>安装Docker（推荐用官方的一键安装脚本，适合小白）</h3><p>非中国大陆服务器</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget -qO- get.docker.com | bash</span><br></pre></td></tr></table></figure><p>中国大陆服务器</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -sSL https://get.daocloud.io/docker | sh</span><br></pre></td></tr></table></figure><p>然后等待一会就安装好了。</p><h3 id="正式安装Halo"><a href="#正式安装Halo" class="headerlink" title="正式安装Halo"></a>正式安装Halo</h3><p>这次我们用Docker安装Halo，更方便<br>先创建配置文件夹</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir ~/.halo &amp;&amp; cd ~/.halo</span><br></pre></td></tr></table></figure><p>然后下载配置文件</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget https://dl.halo.run/config/application-template.yaml -O ./application.yaml</span><br></pre></td></tr></table></figure><p>编辑它</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nano application.yaml</span><br></pre></td></tr></table></figure><p><a href="https://imgtu.com/i/LHFB5D"><img src="https://s1.ax1x.com/2022/04/26/LHFB5D.md.jpg" alt="LHFB5D.md.jpg"></a><br>这里打马赛克的部分是数据库账户密码，可以改一下，剩下的可以看官方文档自己改，admin:是后台登录地址，最好也改掉<br>然后<strong>Ctrl+O</strong>保存，<strong>Ctrl+X</strong>退出<br>先执行</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker pull halohub/halo:latest</span><br></pre></td></tr></table></figure><p>再执行</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker run -it -d --name halo -p 8090:8090 -v ~/.halo:/root/.halo --restart=unless-stopped -e JVM_OPTS=&quot;-Xmx128m -Xms128m&quot; halohub/halo:latest</span><br></pre></td></tr></table></figure><p>这里我限制了内存占用，以免服务器压力过大<br>然后记得在宝塔安全组放行8090端口<br><a href="https://imgtu.com/i/LHF7xs"><img src="https://s1.ax1x.com/2022/04/26/LHF7xs.md.png" alt="LHF7xs.md.png"></a><br>恭喜你，已经完成了60%了<br>在浏览器中输入你的IP:8090就可以进入Halo安装界面了<br>我这里没配图了，有点尴尬，大家自行脑补……<br>安装完成，访问IP:8090就能看到默认的文章了，然后我们一起看下如何绑定域名访问。</p><h3 id="域名解析"><a href="#域名解析" class="headerlink" title="域名解析"></a>域名解析</h3><p>首先需要设置DNS解析,来到你的域名管理后台（我这里以DNSPod为例子）<br>如果你是别的商家域名，也可以绑定DNSPod，免费版已经够用了，大家可以在网上自行搜索例如我用的就是Namesilo使用DNSPod解析，速度会快很多。<br>下面我来演示一下，<br>点击添加记录，主机记录就是一般www的位置，举个栗子：<br><a href="http://www.bilibli.com/">www.bilibli.com</a><br>这里额外讲下@<br>@.bilibili.com 就等于 bilibili.com<br>大家懂了吗？<br><a href="https://imgtu.com/i/LHFJ29"><img src="https://s1.ax1x.com/2022/04/26/LHFJ29.md.png" alt="LHFJ29.md.png"></a><br>那这样我们访问的地址就是<br>blog.example.com（栗子）<br>IP这里我为了给你们演示，是随便写的，实际请换成你自己的公网IP<br>然后在终端内输入</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ping 你的域名</span><br></pre></td></tr></table></figure><p>像是这样就成功了<br><a href="https://imgtu.com/i/LHFUDx"><img src="https://s1.ax1x.com/2022/04/26/LHFUDx.md.png" alt="LHFUDx.md.png"></a><br>不是这样一般就是失败了<br>然后设置反向代理</p><h3 id="反向代理"><a href="#反向代理" class="headerlink" title="反向代理"></a>反向代理</h3><p>在宝塔面板 点击网站——添加站点(按照自己实际情况填域名)<br>在设置——SSL里面申请宝塔或者Let’s Encrypt证书（不成功一般是你域名输错了）<br><a href="https://imgtu.com/i/LHFwVK"><img src="https://s1.ax1x.com/2022/04/26/LHFwVK.md.jpg" alt="LHFwVK.md.jpg"></a><br>很慢的话可以刷新一下页面<br>然后点击配置文件<br>建议按照<a href="https://docs.halo.run/getting-started/install/other/bt-panel">官方文档</a>提示操作<br>点击文档中的添加站点并配置Nginx，建议先把原本的配置复制粘贴到别的地方以免意外<br><strong>这部分内容有点难，不会的小伙伴可以B站私信我，（在博客关于页有我B站ID）我帮你解决，人多的话我会考虑出期视频</strong><br>在开头添加</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">upstream halo &#123;</span><br><span class="line">    server 127.0.0.1:8090;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>Ctrl+F 在配置文件内搜索 location ~ .*.(gif|jpg|jpeg|png|bmp|swf)$<br>把这里一直到 <strong>}的内容</strong>注释掉或者删掉，改为</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">location ~ .*\.(gif|jpg|jpeg|png|bmp|swf)$</span><br><span class="line">&#123;</span><br><span class="line">    proxy_pass http://halo;</span><br><span class="line">    expires      30d;</span><br><span class="line">    error_log /dev/null;</span><br><span class="line">    access_log off;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>然后同样 Ctrl+F 在配置文件内搜索 location ~ .*.(js|css)?$<br>在下面这段的前面<br><strong>access_log  &#x2F;www&#x2F;wwwlogs&#x2F;xxxxx.log;<br>    error_log  &#x2F;www&#x2F;wwwlogs&#x2F;xxxxx.error.log;<br>}</strong><br>注释或删除原内容，添加</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">location ~ .*\.(js|css)?$</span><br><span class="line">&#123;</span><br><span class="line">    proxy_pass http://halo;</span><br><span class="line">    expires      12h;</span><br><span class="line">    error_log /dev/null;</span><br><span class="line">    access_log off; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>还是在这两个log前面<br><strong>access_log  &#x2F;www&#x2F;wwwlogs&#x2F;xxxxx.log;<br>    error_log  &#x2F;www&#x2F;wwwlogs&#x2F;xxxxx.error.log;<br>}</strong><br>添加</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">    location / &#123;</span><br><span class="line">        proxy_pass http://halo;</span><br><span class="line">        proxy_set_header HOST $host;</span><br><span class="line">        proxy_set_header X-Forwarded-Proto $scheme;</span><br><span class="line">        proxy_set_header X-Real-IP $remote_addr;</span><br><span class="line">        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p><strong>注意：以上所有内容都要注意缩进！</strong><br>整体看就是</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">upstream halo &#123;</span><br><span class="line">    server 127.0.0.1:8090;</span><br><span class="line">&#125;</span><br><span class="line">server</span><br><span class="line">&#123;</span><br><span class="line">    ...</span><br><span class="line">    </span><br><span class="line">    location ~ .*\.(gif|jpg|jpeg|png|bmp|swf)$</span><br><span class="line">    &#123;</span><br><span class="line">        proxy_pass http://halo;</span><br><span class="line">        expires      30d;</span><br><span class="line">        error_log /dev/null;</span><br><span class="line">        access_log off;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    location ~ .*\.(js|css)?$</span><br><span class="line">    &#123;</span><br><span class="line">        proxy_pass http://halo;</span><br><span class="line">        expires      12h;</span><br><span class="line">        error_log /dev/null;</span><br><span class="line">        access_log off; </span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    location / &#123;</span><br><span class="line">        proxy_pass http://halo;</span><br><span class="line">        proxy_set_header HOST $host;</span><br><span class="line">        proxy_set_header X-Forwarded-Proto $scheme;</span><br><span class="line">        proxy_set_header X-Real-IP $remote_addr;</span><br><span class="line">        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>备注：这段是我基于Halo的<a href="https://docs.halo.run/">官方文档</a>的二次创作和一点补充，在此特地感谢Halo官方团队！<br>然后访问你的域名应该就可以看到博客了。<br>基本的部署就完成了，然后就是美化了</p><h3 id="博客美化"><a href="#博客美化" class="headerlink" title="博客美化"></a>博客美化</h3><p>先看下美化后的效果<br><a href="https://imgtu.com/i/LHFgKI"><img src="https://s1.ax1x.com/2022/04/26/LHFgKI.md.png" alt="LHFgKI.md.png"></a><br>我们访问Halo官方的<a href="https://halo.run/themes.html">主题仓库</a><br>选择一个你喜欢的主题，例如 Butterfly。<br>在这个页面里一般有主题的Github地址，比如：<a href="https://github.com/dhjddcn/halo-theme-butterfly.git">https://github.com/dhjddcn/halo-theme-butterfly.git</a><br>我们访问你的Halo后台：一般是 你的域名&#x2F;admin（如果你改了的话就用你改的地址）<br>登录以后，点击外观——主题——安装——远程下载 粘贴你的主题仓库地址，一会就下好了。<br>然后大家就可以自己摸索尝试了，界面也比较直观。</p><h3 id="备份与恢复"><a href="#备份与恢复" class="headerlink" title="备份与恢复"></a>备份与恢复</h3><p>在系统——小工具里有博客备份，<br>整站备份是把你的配置文件夹压缩直接下载下来，包含主题、评论之类的<br>而数据导出是备份一个json文件，可以在安装时导入，不包含主题，（评论我还没测试）<br>大家按需选择，不过我整站备份下载不了，不知道是不是个例？<br>在你重新安装时就可以把json文件导入了</p><h3 id="Ending"><a href="#Ending" class="headerlink" title="Ending"></a>Ending</h3><p>OK，这篇文章我爆肝了2、3个小时才写出来的，如果对你有帮助就是我更新的最大动力。如果你有问题欢迎B站问我，ID在关于页面。当然你有Money又比较懒的话也可以私信我让我远程搭建一条龙（不过应该也没人找我），那我们下次再见，Byebye~</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 技术 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Halo </tag>
+            
+            <tag> 个人博客 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>分享服务器刚装系统后必做的事</title>
+      <link href="/posts/5bf267c9/"/>
+      <url>/posts/5bf267c9/</url>
+      
+        <content type="html"><![CDATA[<h2 id="分享服务器刚装系统后必做的事"><a href="#分享服务器刚装系统后必做的事" class="headerlink" title="分享服务器刚装系统后必做的事"></a>分享服务器刚装系统后必做的事</h2><p><strong>演示基于Debain 11</strong></p><h4 id="1-安装中文"><a href="#1-安装中文" class="headerlink" title="1 安装中文"></a>1 安装中文</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dpkg-reconfigure locales</span><br></pre></td></tr></table></figure><h4 id="2-新建用户"><a href="#2-新建用户" class="headerlink" title="2 新建用户"></a>2 新建用户</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">adduser leo</span><br></pre></td></tr></table></figure><p>这里的leo可换成自己的名字<br>给sudo权限</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">visudo</span><br></pre></td></tr></table></figure><p>在 <strong># User privilege specification</strong><br>这行下添加</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">leo    ALL=(ALL:ALL) NOPASSWD: ALL</span><br></pre></td></tr></table></figure><p>同理更换用户名</p><h4 id="3-更新软件包"><a href="#3-更新软件包" class="headerlink" title="3 更新软件包"></a>3 更新软件包</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt update &amp;&amp; sudo apt upgrade</span><br></pre></td></tr></table></figure><h4 id="4-安装zsh"><a href="#4-安装zsh" class="headerlink" title="4 安装zsh"></a>4 安装zsh</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install zsh</span><br></pre></td></tr></table></figure><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chsh -s /bin/zsh</span><br></pre></td></tr></table></figure><p>再安装<strong>OMZ (oh-my-zsh)</strong><br>国内用户可以用Mintimate大佬的脚本</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">zsh -c &quot;$(curl -fsSL &#x27;https://api.host.mintimate.cn/fileHost/public/download/1P0R&#x27;)&quot;</span><br></pre></td></tr></table></figure><p>源地址 <a href="https://www.mintimate.cn/2021/02/05/configZsh/#Oh-my-zsh">https://www.mintimate.cn/2021/02/05/configZsh/#Oh-my-zsh</a><br>关闭粘贴自动转义</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nano .zshrc</span><br></pre></td></tr></table></figure><p>在source <code>$ZSH/oh-my-zsh.sh</code>前面添加 <code>DISABLE_MAGIC_FUNCTIONS=true</code><br> 映射给root用户<br> <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo ln -s $HOME/.oh-my-zsh /root/.oh-my-zsh</span><br><span class="line">sudo ln -s $HOME/.zshrc /root/.zshrc</span><br></pre></td></tr></table></figure><br> 在.zshrc内添加<code>ZSH_DISABLE_COMPFIX=true</code></p><h4 id="5-开启BBR"><a href="#5-开启BBR" class="headerlink" title="5 开启BBR"></a>5 开启BBR</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo nano /etc/sysctl.conf</span><br></pre></td></tr></table></figure><p>最底下添加</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">net.core.default_qdisc=fq</span><br><span class="line">net.ipv4.tcp_congestion_control=bbr</span><br></pre></td></tr></table></figure><p>重启后检查一下</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsmod | grep bbr</span><br></pre></td></tr></table></figure><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsmod | grep fq</span><br></pre></td></tr></table></figure><p>有<code>tcp_bbr</code>返回一般就成功了</p><h4 id="6-添加swap-懒的可以用脚本"><a href="#6-添加swap-懒的可以用脚本" class="headerlink" title="6 添加swap(懒的可以用脚本)"></a>6 添加swap(懒的可以用脚本)</h4><p>创建2g的swap（一般为服务器真实内存1-2倍）</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo fallocate -l 2G /swapfile</span><br></pre></td></tr></table></figure><p>改权限</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo chmod 600 /swapfile</span><br></pre></td></tr></table></figure><p>用mkswap设置</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo mkswap /swapfile</span><br></pre></td></tr></table></figure><p>激活swap</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo swapon /swapfile</span><br></pre></td></tr></table></figure><p>改永久（一般重启失效）</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo nano /etc/fstab</span><br></pre></td></tr></table></figure><p>添加<code>/swapfile swap swap defaults 0 0</code><br>最后<code>free -h</code>看下是否有swap（交换）一行</p><h4 id="7-安装Docker-compose"><a href="#7-安装Docker-compose" class="headerlink" title="7 安装Docker+compose"></a>7 安装Docker+compose</h4><p>非中国大陆服务器</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget -qO- get.docker.com | bash</span><br></pre></td></tr></table></figure><p>中国大陆服务器</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -sSL https://get.daocloud.io/docker | sh</span><br></pre></td></tr></table></figure><p><strong>Docker-compose</strong><br>非大陆服务器</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo curl -L &quot;https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)&quot; -o /usr/local/bin/docker-compose</span><br></pre></td></tr></table></figure><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo chmod +x /usr/local/bin/docker-compose</span><br></pre></td></tr></table></figure><p>检查是否成功</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-compose --version</span><br></pre></td></tr></table></figure><p>大陆服务器</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">curl -L https://get.daocloud.io/docker/compose/releases/download/v2.1.1/docker-compose-`uname -s`-`uname -m` &gt; /usr/local/bin/docker-compose</span><br><span class="line">chmod +x /usr/local/bin/docker-compose</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      <categories>
+          
+          <category> 技术 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 服务器 </tag>
+            
+            <tag> Linux </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>团圆是家庭的本</title>
+      <link href="/posts/69c984a/"/>
+      <url>/posts/69c984a/</url>
+      
+        <content type="html"><![CDATA[<p>家是什么？是一栋房子？一群人？是很多钱换得来的东西？还是就存在于每个人的心中？对我而言，家则是一种团圆的幸福感受。我小时候曾一个人待在房子里，一个人无拘无束，尽情玩耍，可却无法给我带来家的那种感觉。它是一种奇妙的，令人高兴的，感到安全的，拥有幸福感的感受。</p><p>记得二三年级的那次周末，妈妈说她接到紧急通知，说要加班一天，晚上才回来，午餐放在锅里了，老爸也有事，外婆去参加沪剧沙龙了，家里就只有我一人，我一开始得到这个消息后，恨不得马上跳得飞起来，心想：没有大人在耳边唠叨，可以好好地玩一天了！我的心情就像是坐上了过山车，飞到了顶峰。</p><p>等他们都走了，我便开始了我的“愉快周末”，我先是把之前没有玩过的玩具都翻箱倒柜地拿了出来，想着一次性玩个够，不过一会儿就把房间弄得天翻地覆，到处都是我的玩具。我甚至还吃起了零食，零食残渣搭配上凌乱的玩具，场面一度变得混乱起来，仿佛自己置身于垃圾堆中。</p><p>起初，我并没有感到无聊，反而沉浸在自己亲手制造的浩大场面中，可谓是玩得不亦乐乎。然而，当我吃完饭后，事情就变了……<br>天空中渐渐传来一阵阵电闪雷鸣的声音，还有逐渐猛烈起来的窸窸窣窣的雨声，我玩得也感到有些无趣，寂寞了，由于当时我还小，随着窗外的雷声和雨水声，就不由自主地害怕了起来，我急忙躲到了房间里的角落里，一时感到不知所措……</p><p>现在回想起来，心想：其实一个人待在家里也并没有想象中的那么美好，反而会因为独自一人而感到孤单，寂寞，慌张，害怕。我突然懂得了家的在我心目中的真正意义，那便是一群无论在何时何地都不会抛弃你的人。</p><p>那天晚上，家人们都回来了，我急忙冲过去，哭了好久，好久……</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 作文 </category>
+          
+      </categories>
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>外婆的爱</title>
+      <link href="/posts/19ca06a3/"/>
+      <url>/posts/19ca06a3/</url>
+      
+        <content type="html"><![CDATA[<p>小时候，我几乎每天都能看见她的身影，但随着时间的推移，她却一天不如一天，变得苍老。</p><p>我是被外婆带大的，因为父母工作忙碌，所以那时与我相处最久的人就是外婆。</p><p>外婆对我格外疼爱，每天都会准备美味的一日三餐。</p><p>一次，我在吃晚饭时偶然发现她的左手指上多了一个大伤口，便问她：“外婆，你手怎么受伤了？”“小伤，没事的。”她轻描淡写地说着。那时的我看看她，又看看桌上的土豆丝，仿佛明白了些什么，从中我仿佛看到了：她的那双饱经苍桑的手，虽然这看似是一件平常的事，但却让我久久不能忘怀，我似乎看见了她每个清晨做早饭的背影，是那么的苍老，但又充满着她的毅力。外婆从前乌黑的头发渐渐变得苍白，手上的裂痕只增不减，脸上也不像从前一样容光焕发。<br>我问她：“外婆，你为什么会有白头发？”她说：“每个人都是会变老的。”我对此感到害怕，害怕外婆变老，害怕她离开我。</p><p>那天晚上，我久久不能入睡，便着急地跑到外婆房间，问她：“有没有不变老的办法？我不希望你变老。”</p><p>“没有。”她笑着说，“但是你想想，我在变老的同时你也会长大，不是吗？不要害怕将来，重要的是活在现在。”当时的我对这句话只是半知半解，但它深深地留在了我的记忆中。</p><p>现在，我终于懂得了她的那句话，但我也不再和外婆一起生活。虽然看到她的次数也慢慢减少，但她对我的爱却是永恒的……</p><p>时间一分一秒过去，现在我也时常想起外婆深沉的爱！</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 作文 </category>
+          
+      </categories>
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>外婆</title>
+      <link href="/posts/3ef09f42/"/>
+      <url>/posts/3ef09f42/</url>
+      
+        <content type="html"><![CDATA[<p>三岁时，外婆的朋友来家里做客是问我说：“你最喜欢的人是谁？”我答到：“外婆！”他们总是哈哈大笑。我对此感到奇怪，心想：这有什么好笑的？你们难道不喜欢自己的外婆吗？那时，因为父母工作繁忙，没有时间照顾我，就把我托付给了外婆。</p><p>在家中，我十分调皮捣蛋。一次，我在接水时故意把杯子放在手中一晃一晃，我当时只觉得那样很好玩。谁知水洒到了地上，我没有在意，便大摇大摆地走了过去，结果摔了一个大跟头，手中的玻璃杯也碎了。我当时年龄很小，哪里见过这种“大场面”，连忙坐在地上哇哇大哭起来。正在房间里忙着家务的外婆听到动静后立刻赶了过来，她对我说：“乖乖，不要怕！让我看看受伤了没有……没事，乖，你回沙发上坐着。不许哭了，不哭我就给你吃糖。”听到这句话，我立刻跑到了沙发上坐好，外婆也开始收拾起来……花了好久，她才收拾干静。她汗流浃背地拿了一根棒棒糖给我吃，笑着说：“你这个捣蛋鬼，下次可不许这么淘气了。”我接过糖，高兴地点了点头。</p><p>我家附近有个菜场，小时候，外婆总是带着一辆手推车和我一起去买菜。当她一次在结账时，老板找零钱找了好久，我恰好被菜场外的事物吸引了，便一言不发地偷偷摸摸地跑了出去。我在外面玩了好久才发现外婆不见了，我立刻焦急起来，在菜场里东奔西跑，还是不见她的踪影。忽然，她的身影猛然出现在我的眼前，她连忙抱起我说：“你知不知道你把我吓坏了！要是再没找到你的话，我都要报警了。下次不可以这样了！赶紧回家吧。”我感到十分内疚，从此再也没有乱跑过。</p><p>刚上一年级时，外婆和我走去学校，我一路上嚷着不去学校，无论是谁，怎么劝也没用。我见反抗不行，就在地上打起了滚。当家里其他人都不耐烦时，只有外婆坚持地又哄又骗地劝我，最终终于把我送到了校门口。可我在这时却打了退堂鼓，死活不能动摇。外婆语重心长地说：“学校里有很多同学和老师，和他们在一起一定比待在家里更高兴。”过了好一会儿，我才终于踏入了校门。</p><p>现在父母的工作不忙了，有充足的时间照顾我，因此我也不和外婆一起生活了，但和外婆共同生活的那段时光，却怎么也忘不了。如果现在还有人问我我最喜欢的人是谁，我依然会毫不犹豫地回答：“外婆！”</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 作文 </category>
+          
+      </categories>
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>芝麻馅饼</title>
+      <link href="/posts/c4b901ef/"/>
+      <url>/posts/c4b901ef/</url>
+      
+        <content type="html"><![CDATA[<p>去年春节，母亲去家附近的小店买了一袋芝麻馅饼。包装是纸袋，洁净、质朴。</p><p>将馅饼从袋中取出，仿佛一个个大头娃娃，可爱极了。</p><p>“吃馅饼了！”随着母亲的叫声，一家子人洗好手，迫不及待地享用这美食。为此，我还专门挑选了自己心仪的盘子，四处洋溢着欢快的气息。咬一口，是梅干菜馅的，口味偏咸，但令我感到遗憾的却并不是仅仅因为这一点，而是……</p><p>由此，我不禁回忆起了四五岁时外婆做的馅饼。那时还并没有现在这么繁杂的种类，只有最普通的几种：肉，葱，芝麻。而我最偏爱的便是芝麻馅的。</p><p>在春节前几天，家里就忙的热火朝天。外公一大早就出门去超市去买面粉，据说那儿人山人海，他排了好长的队才买到。家中也同样忙碌，外婆忙着揉面，母亲负责做饼，<br>而父亲则负责煎饼。一家人虽然很忙碌，但大家也都对此感到充实。</p><p>大年初一那天，我恨不得立刻就能吃到热乎的馅饼，一大早就缠着父亲煎饼，他笑着说：“别着急！要等大家和亲戚都起来了再吃。”我只好耐心等待……终于，看着一个个柔软的面饼下锅时，我甚至流出了口水。“滋滋滋”面饼在油锅里翻滚着，散发着诱人的香味。<br>终于大功告成了，把煎饼从冒着热气的锅中放到盘子里，就可以开动了。盼望已久的馅饼终于出炉，我当时感到这或许就是人生中最幸福的事，恨不得一口气吃完一个。于是，一大口下去，“啊！”原来是我太着急了，不小心咬到了自己的舌头，引的大家哄堂大笑，我的脸立刻红了起来。细细品味，还真是别有一番风味。一口下去，酥脆的饼皮与喷涌而出的芝麻彻底征服了我的味蕾，整整吃掉了两个，还吃出了个大花脸。大人们也吃得不亦乐乎，他们一边吃着馅饼，一边谈笑风声，生活中的不愉快也仿佛灰飞烟灭。<br>可惜，好景不长，突如其来的疫情阻止了很多留在外地的亲人与我们团圆，所以我才会认为外面的馅饼再怎么美味，也终究比不上家人亲手做的馅饼。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 作文 </category>
+          
+      </categories>
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>除夕</title>
+      <link href="/posts/7bb12cb7/"/>
+      <url>/posts/7bb12cb7/</url>
+      
+        <content type="html"><![CDATA[<p>窗外的北风咆哮了好几天，散发着一股寒冷的气息，整座城市仿佛变成了冰天雪地，但它同样意味着：新的一年来了！</p><p>新年前夕，家里人都说要提前准备起来，首当其冲的肯定是要去买好做年夜饭的食材。于是，我和外公一起前往了附近的超市采购。<br>大街上，虽然上海的冬天并不经常下雪，但是外面的寒风却依旧凛冽，逼迫路上的行人都带上了口罩，穿上了厚衣。尽管那天我穿着羽绒服，却依旧感到瑟瑟发抖。<br>路旁的商店逐渐变少，行人也逐渐消散，想必都是为了回家过年。</p><p>虽然离新年还有一段时间，但超市里却人山人海，到处都充满了叽叽喳喳的声音，我们采购时甚至发现好多食材都卖完了，结账时的队伍仿佛一条长龙。<br>除夕那天，家里的大人都起了个大早，开始准备年夜饭，包饺子、做汤圆、熬高汤……忙得不可开交，他们一边做准备一边谈笑风生，聊得不亦乐乎。<br>下午，亲戚们到了。“叫人啊！”父亲对我说。“舅舅，舅妈，叔叔，阿姨……新年好！”“新年好啊！这是你的红包。”“谢谢。”<br>母亲赶紧为亲戚们到上了茶水，他们边看电视边聊着各自的生活。我则与表哥表弟走到了楼下，一起打篮球。拍球、传球、投篮，虽然我们的技术都不是很好，但也玩得很高兴。</p><p>就这样，两个小时过去了，终于可以吃年夜饭了。大家围到餐桌前，吃起了晚饭。“这红烧肉不错。”“您过奖了。”“这鱼太好吃了吧。怎么做的？”“你看，先这样，这样……”“为了庆祝新年，干杯！”“干杯！”当时，每个人都很高兴，都享受着新年的气氛。</p><p>我想，这就是真正的年吧。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 作文 </category>
+          
+      </categories>
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>令人不解的坚持</title>
+      <link href="/posts/71aa82c8/"/>
+      <url>/posts/71aa82c8/</url>
+      
+        <content type="html"><![CDATA[<p>离我们的学校不远处有一个敬老院，它是那么不引人注目。</p><p>第一次真正注意到它，是在一次放学路上。那时，我常常和邻居家的儿子——小杜一起回家。</p><p>但自从那天起，我每周五放学后都会看见他偷偷摸摸地向学校旁一条小路奔去。起初，我并没有在意，但长久以往都是如此，我心想：那家伙怎么每次遛得这么快，难不成是发现了什么有趣的地方？小杜在班中十分活跃，是出了名的“捣蛋鬼”。于是我决定上前看看。</p><p>随着他的步伐，只看见他正兴高采烈地奔向一条我不熟悉的街道，于是，我从校门口跑到了一条不怎么起眼的街道，我心想：这不是回家的路线啊？他究竟在搞什么鬼。我想他一定是玩心重，发现了许多有趣的事物。仔细靠近一看，他正在站在一家敬老院门口，手里好像拿着什么东西？我对此感到奇怪。</p><p>为了解答心中的疑惑，我悄悄走到了他身边，拍了拍他的肩，不解地问他来做什么。他先是一惊，然后笑了笑说：“敬老节快要到了，我看电视节目中有许多孤寡老人，他们平日里没有他人陪伴，一定会很寂寞，所以就来看看他们，顺便带些礼物。“</p><p>我当时很是感动，没想到平日里调皮捣蛋的他也是那么的热心肠。但我的心里依旧还有一个疑问：他要是想做好事，没必要那么小心翼翼的，还可以号召大家一起帮忙。为什么不告诉我们呢？面对我的疑问，他告诉我，他不想把这件事弄得大张旗鼓，因为这样就会吸引大家的关注，这样就失去了他做好事的初衷。</p><p>我当时愣住了，原来在他表面的调皮下，还有着这样不为人知的一面。他的心中，也包含了沉沉的爱。或许他做的只是一件微不足道的小事，但正是这些看似微不足道的小事，就构成了我们每个人的人生。如果你不仔细观察，就发现不了它。但它其实就在我们的日常生活中，随处可见。</p><p>过了一会儿，我才缓过神来，笑了笑对他说：“既然如此，我也要一起参加。”于是，我们一起到养老院里为老人们讲笑话，一起唱歌，画画。那一天，养老院里的所有老人<br>都露出了慈祥的笑容。</p><p>那一天，我虽然感到很疲倦，但却感到一种发自内心的快乐，仿佛忘记了疲惫……</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 作文 </category>
+          
+      </categories>
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>春雨</title>
+      <link href="/posts/6974ffe/"/>
+      <url>/posts/6974ffe/</url>
+      
+        <content type="html"><![CDATA[<p>我曾经一直不喜欢雨。</p><p>雨在我的生活中仿佛代表着一个负面的形象，下雨了，不能外出活动锻炼，出门必须带伞、穿雨衣，很容易弄湿鞋子……还总是与那喧嚣的雷声作伴，甚至有时还能令人联想的一些不那么愉快的事。</p><p>但春雨不同，它仿佛有种魔力，能使万物复苏，让一切充满生机。<br>儿时春天的一个清晨，我起了床，习惯性地向窗子外望了望，窗外传来一阵“滴答滴答”的声音，显然，那是春雨的声音，门窗上的小水滴好似仙女一般偏偏起舞，从上面到下面，从上面到下面，那天的雨并不大，让人心情平缓。那天，我反常的迫切想要出门，连忙穿上雨衣，推开家门，来到小区附近的公园里，坐在湖边的长椅上观赏美景，看着空中的细雨从天上掉入湖中的样子，原本清澈的湖面不知为何仿佛有种朦胧的意境，好像有种风景如画的感觉了。</p><p>走进小树林里，看着两旁高耸入云的树木，看雨点打在树叶上，看树叶随风飘荡，看雨点在地板上的形状……我一个人在那里自娱自乐着，乐此不疲。由于那一天是雨天，公园里几乎没有什么人，这在平常令我感到有些无趣，但在那天却令我感到格外清净。走走停停，看看景色，就这样，我走了好久，发现了许多平时都不会关注的美好事物。<br>当我在小树林中漫步时，偶然发现小径旁的灌木丛中长出了几多粉嫩粉嫩的伴随着水滴的小花，为这单调的树林带来了一点五彩缤纷的美感。一侧的竹林中，竹笋们正悄无声息地生长着……那一天我在公园里逛了好久，但它确实让我大开眼界。</p><p>我虽然不喜欢雨，但却喜欢春雨，可能正是因为它那朦胧而又神秘之美，正所谓“随风潜入夜，润物细无声”不像夏雨那么急促猛烈，不像秋雨那么寒而不冷，不像冬雨那样冰冷刺骨，安静而又优雅，能在你不经意间滋润世间万物，正因如此，能让人更轻易的察觉到许多平常不会在意的美好的事物。</p><p>这或许真的是我喜欢春雨的原因吧。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 作文 </category>
+          
+      </categories>
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>渐渐远去的一片绿色</title>
+      <link href="/posts/fd041a86/"/>
+      <url>/posts/fd041a86/</url>
+      
+        <content type="html"><![CDATA[<p>几年前，那里是一片树林，紧挨着一个湖，绿树成荫，湖水清澈。在当时烈日炎炎的夏日里，我最喜欢的就是和小伙伴们在那里一起追逐嬉戏，虽然天很热，但我们却很高兴。它仿佛就是在这火热的夏日中唯一的清凉。我一直认为来到这里是一种享受。</p><p>去年暑假，我又来到了那里，可却只能发出一声遗憾。</p><p>我简直不敢相信自己的眼睛。</p><p>原来的绿道已经化为乌有，在我面前的只有正在装修的好几家商店，挖土机无情的咆哮着，钻头发出“滋滋”的声音，建筑工人们正在砍伐着仅剩无几的几棵树木，切割着已经砍下的木头。</p><p>我甚至觉得不可思议，活了这么久的树林说砍就砍了。</p><p>我自然觉得很伤心，刚想靠近看看，就被正在施工的工人们拦住了。</p><p>“小朋友，这里在施工，快点离开吧。”</p><p>我还是觉得难以置信，问他：“原来的树呢？都被砍了？”</p><p>“哎，这树林也没有发挥什么实际用处，你看，用来做建筑材料多好？建成了肯定有不少人到这里来。”</p><p>我当时很气愤，但又无言以对，突然就想起以前的情景。</p><p>我和小伙伴们一起来这里比赛跑步，虽然我总是输，但也很开心。大人们也很悠闲，老年人有些带着小板凳扇着扇子乘凉，有些老年人经常来这里打太极拳，年轻人有的来</p><p>这里写生画画，也有些来这里弹吉他，也有人来这里骑自行车。虽然人不多，一切都是如此美好。</p><p>我哭着跑回了家，向妈妈诉说了这件事，她说这是没办法的事，有些人更关注的是钱和流量，你也不能说他们有错，但也并不代表这就是没错的，别想它了。</p><p>可是事到如今每当我路过那个湖的时候，就会想起：这样一味的扩张真的好吗，这样下去自然的资源迟早会被消耗殆尽吗？</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 作文 </category>
+          
+      </categories>
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>爱的形状</title>
+      <link href="/posts/71ffa568/"/>
+      <url>/posts/71ffa568/</url>
+      
+        <content type="html"><![CDATA[<p>爱有什么形状？一次偶然，我知道了爱的形状。</p><p>从我出生起，几乎每天都能穿到干净的衣服，那种幸福不是我以前能够理解的。几乎每件衣服都十分洁净，到处散发着阳光的气息。每天上学，同学们看到这件穿了多年的校服，都会感叹：“我看你这么多年也没有买新校服，是怎么保持着一直没有皱纹，毫无污渍的，还散发着一股香味。”可我以前却不以为然，认为这本该是理所当然的事。</p><p>二年级临近跑步考试的一天，我们在体育课上都疯狂练习。有一次，我正在练习跑步，因为速度太快，一不留神就摔了一跤，裤子上裂开了个大洞。回到家，我像往常一样换了一条裤子，并将有洞的裤子随手放在柜子上，之后便没有在意。令我意外的是，第二天早晨，从睡梦中醒来的我发现了原来那条裤子上多了一个补丁。刚开始我还没有发现，仔细看了才知道，简直是天衣无缝。我刚刚感到有些困惑，一会儿便发现了还带着黑眼圈的外婆，我才恍然大悟：昨晚外婆连夜为我补裤子的事实。那时我虽有些高兴，认为自己有一个这样的全能外婆真是太幸运了，但却没有多想什么。</p><p>当我第二次感受到爱的形状时，已经是四年级时。时光飞逝，我也从刚上学时的懵懂慢慢变得成熟，那段往事渐渐淡去，但那一天，那件事就又从我脑海中走出来。</p><p>那个周六，正值酷暑，太阳把大地烤得火辣辣的。我早上刚起床，刚想伸个懒腰，就看到了她一大早就坐在阳台上，手里拿着针线。于是，我走到她身边，好奇地问：“外婆，您这么早起来，是干什么呀？”“你看，我在给你织毛衣呀。”她慈祥地笑了。“这才刚到七月呀！为什么要织毛衣？而且商店里不仅款式多，还不贵，您不用这么辛苦的。”我对此感到奇怪。外婆摸了摸我的头，说：“外面买的不保暖，我这可是纯手工的，织了好久呢，这样好看又保暖。你看，喜欢吗？”</p><p>我当时愣了好一会儿，突然感到一阵暖流涌上心头，我终于明白了“爱的形状”，它是无形的，无形到你不会注意，它是默默地付出，默默地守护，不求回报；它又是有形的，只要你细心观察，就会发现它的形式多姿多彩，这不是能用两三句话概括的，需要用心去感受。</p><p>过了几分钟，我这才反应过来，只是会心一笑，说：“我喜欢，谢谢外婆。”</p><p>那天晚上，我久久不能入睡，我用心去感受到了爱的形状，它可能是在你遇到困难时的一句鼓励，也可能是一顿平平无奇的晚餐，还可能是一件衣服。</p><p>那一刻，我想，这就是爱的形状吧。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 作文 </category>
+          
+      </categories>
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>打篮球</title>
+      <link href="/posts/c0aecd71/"/>
+      <url>/posts/c0aecd71/</url>
+      
+        <content type="html"><![CDATA[<p>我喜欢打篮球。<br>篮球是一项看起来很酷的运动，但实际试过就会知道实际困难重重。运球，传球，接球，上篮，三分球……这些都是学篮球必须掌握的。自从某一天我在电视上看到了一场NBA篮球比赛，对它的热爱就是一发不可收拾了。<br>我托外公为我买一个篮球，随后几乎我每天一写完作业就按照网上的教程认真地学习，甚至有时都忘了回家。有时学习基本规则，有时学习实战动作，学得不亦乐乎。<br>自从我学到了一点皮毛，每当校内体育课自由活动时，就会到处召集同学，：“一起打一局吗？”正当我兴致勃勃地想要展示自己的球技时，才意识到自己的不足。<br>那一次，我与我的好朋友小许一起进行1对1比赛，刚开始，我得意扬扬，迫不及待地开始了运球，在我看来近乎完美的进攻路线却漏洞百出，没过一会儿就被反应灵敏的小许抢断了，当我还没反应过来，他就一下子窜到了篮下，准备上篮。我急急忙忙地向那里冲去，可却没判断出他的假动作，甚至还因为跑得太快摔跤了。<br>随着时间的流逝，伴随着一次次的抢断、追逐、投篮，并且由于对规则的不熟悉，经常犯很多低级错误，例如投篮打手，撞人等等……而我的体力也逐渐消耗殆尽，最终以10：2的比分惨败给了小许。我一个人跑到一旁默默叹息，反思到：我还是要沉下心更加专注地学习，不能学到一点皮毛就沾沾自喜，于是我下决心认真学习打篮球。<br>这一次，我把之前看过的每一节课程都反复看了一遍，并且记下重要内容，并且每节课后都会在篮球场练习上课的知识点，从最基本的运球，到复杂的投篮，也与同学相约一起练习实战，终于取得了不小的进步。<br>这一次，我再次邀请小许来单挑。这一次，我沉着冷静，每一步都小心翼翼，小许发球了，我紧紧咬在他的身前，眼神始终注视在球上，他也不甘示弱，总想找机会突破，我严防死守，趁他一个不注意立刻夺球而跑到篮下，上篮——进球了！这是我在比赛中第一次进球呢！但我并没有骄傲，而是继续专注于打球，最终以14:12险胜。小许也笑着说：“才没见多久你的技术就长进这么快。”“主要是熟能生巧，没什么了不起的。”我也笑了。<br>我发现，篮球这门运动令我热爱的不仅是球场上炫酷的技术，更有认真努力，拼搏到底的精神啊！</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 作文 </category>
+          
+      </categories>
+      
+      
+    </entry>
+    
+    
+  
+  
+</search>
